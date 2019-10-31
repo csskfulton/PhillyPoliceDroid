@@ -1,55 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/PSAArea"
+
+    <LinearLayout
+        android:id="@+id/psaTextStatic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:text="PSA Area 1"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:gravity="center"
+        android:layout_alignBottom="@+id/psainfostuff"
+        android:padding="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/PSALieutenant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/PSAArea"
-        android:layout_below="@+id/PSAArea"
-        android:text="PSA Lieutenant"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/PSAArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:text="PSA 1" />
 
-    <TextView
-        android:id="@+id/PSALieutenantTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/PSALieutenant"
-        android:textStyle="bold"
-        android:layout_below="@+id/PSALieutenant"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/PSAEmailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/PSAArea"
-        android:layout_marginRight="10dp"
-        android:text="E-mail Adress" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/PSAEmail"
-        android:layout_width="wrap_content"
+
+    <View
+        android:id="@+id/psaStaticDivider"
+        android:layout_width="3dp"
+        android:layout_toRightOf="@+id/psaTextStatic"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignTop="@id/psainfostuff"
+        android:layout_alignBottom="@id/psainfostuff"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:id="@+id/psainfostuff"
+        android:layout_toRightOf="@+id/psaStaticDivider"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/PSALieutenant"
-        android:layout_alignBottom="@+id/PSALieutenant"
-        android:layout_alignRight="@+id/PSAEmailTextView"
-        android:text="TextView" />
+        android:padding="10dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView13"
+            android:padding="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:text="PSA Lieutenant" />
+
+        <TextView
+            android:id="@+id/PSALieutenantTextView"
+            android:padding="3dp"
+            android:textSize="17dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="LT. kjhsjhdfjskdjf kjksdjfkjskdjf" />
+
+        <TextView
+            android:id="@+id/PSAEmail"
+            android:padding="3dp"
+            android:textSize="17dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="jndlsjddfgdff#kjksjdfvdcfg.com" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

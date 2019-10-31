@@ -213,7 +213,7 @@ public class DistrictInfoFragment extends Fragment{
 							TextView LTName = (TextView) v.findViewById(R.id.PSALieutenantTextView);
 							TextView email = (TextView) v.findViewById(R.id.PSAEmail);
 
-							area.setText("PSA Area " + hon.getPSAArea());
+							area.setText(hon.getPSAArea());
 							LTName.setText(hon.getLTName());
 							email.setText(hon.getEmail());
 							table.addView(v);
