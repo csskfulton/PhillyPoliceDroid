@@ -40,7 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import furious.utils.HttpClientInfo;
-import furious.viewfragments.PoliceNewsAll;
+import furious.viewfragments.main.MainStartFragmentActivity;
 
 
 public class PoliceUpdateService extends Service{
@@ -48,16 +48,14 @@ public class PoliceUpdateService extends Service{
 	NotificationManager notificationManager;
 	HttpURLConnection httpcon;
 	Uri police;
-	String TITLE;
-	String CType;
 	ArrayList<String> prefs;
     Timer tim;
+	NotificationCompat.Builder mBuilder;
+	String NHash;
 
 	boolean isNEW_STORY = false;
-	boolean isNEW_VIDEOS = false;
 	
 	boolean IMDIFF_NEWS = false;
-	boolean IMDIFF_VIDEO = false;
 
 	int ok = 000;
 
@@ -93,22 +91,34 @@ public class PoliceUpdateService extends Service{
                         break;
 
                 }
-		}
+		}else{
+
+				Log.i("NO INTENT CALLED","onStartCommand()");
+				checkForUpdateTask();
+
+			}
 			
 	    return START_STICKY;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.i("SERVICE SAID::::: ", "onDestroy SERVICE.....");
+		tim.cancel();
+		Log.i("TIMER STATUS","I STOPED THE TIMER");
 	}
 
 	
 	@Override
 	public void onCreate(){
 		super.onCreate();
-		
+
 		notificationManager = (NotificationManager) 
 				  getSystemService(NOTIFICATION_SERVICE);
 		
 
 		Log.i("PHILLY_POLICE", "Service called onCreated()");
-		//checkForUpdateTask();
 
 }
 	private void checkForUpdateTask() {
@@ -116,13 +126,27 @@ public class PoliceUpdateService extends Service{
 		tim.scheduleAtFixedRate(new TimerTask(){
 			@Override
 			public void run(){
-				new chkforNewHashes().execute();
+
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				boolean isEnabled = prefs.getBoolean("checkbox_preference", false);
+
+				if(isEnabled){
+					Log.i("CHECKBOX STATUS","ALERT IS VERY SET");
+					new chkforNewHashes().execute();
+				}else{
+					tim.cancel();
+					Log.i("CHECKBOX STATUS","ALERT NOT SET");
+					Intent intent = new Intent(getApplicationContext(), PoliceUpdateService.class);
+					getApplicationContext().stopService(intent);
+					Log.i("KILL KILL","Killing Service");
+
+				}
+
 			}
-//		},10000,7200000); //every 2 hours after 10 second delay
-			},10000,10000);
+		},10000,7200000); //every 2 hours after 10 second delay
+//			},10000,10000);
 	}
-	
-	
+
 	
 	private String getNewsHash(String key) {
 		
@@ -199,15 +223,16 @@ public class PoliceUpdateService extends Service{
 
 												JSONObject itemObj = h_keys.getJSONObject(i);
 
-												if(itemObj.getString("HashName").equals("Calendar")){
-													 Log.i("SERVER RESPONSE :: ", "Calendar HASH: "+itemObj.getString("Hash"));
-													//isNEW_STORY = isDiffHash("CalendarHash",itemObj.getString("Hash"));
-												}
+//												if(itemObj.getString("HashName").equals("Calendar")){
+//													 Log.i("SERVER RESPONSE :: ", "Calendar HASH: "+itemObj.getString("Hash"));
+//													//isNEW_STORY = isDiffHash("CalendarHash",itemObj.getString("Hash"));
+//												}
 
 												if(itemObj.getString("HashName").equals("NewsStory")){
 
 													Log.i("SERVER RESPONSE :: ", "NewsStory Hash: "+itemObj.getString("Hash"));
 													isNEW_STORY = isDiffHash("NewsStoryHash",itemObj.getString("Hash"));
+                                                    NHash = itemObj.getString("Hash");
 
 														if(isNEW_STORY){
 															Log.e("PHILLY_POLICE","NEWS STORY HASH HAS CHANGED");
@@ -218,19 +243,19 @@ public class PoliceUpdateService extends Service{
 														}
 												}
 
-												if(itemObj.getString("HashName").equals("UCVideos")){
-
-													Log.i("POLICE_N", "UCVideos Hash: "+itemObj.getString("Hash"));
-													isNEW_VIDEOS = isDiffHash("UCVideosHash",itemObj.getString("Hash"));
-
-														if(isNEW_VIDEOS){
-															Log.e("PHILLY_POLICE","UC_VIDEOS HASH HAS CHANGED");
-															IMDIFF_VIDEO = true;
-
-														}else if(!isNEW_VIDEOS){
-															Log.e("PHILLY_POLICE","UC_VIDEOS HASH HAS NOT CHANGED");
-														}
-												}
+//												if(itemObj.getString("HashName").equals("UCVideos")){
+//
+//													Log.i("POLICE_N", "UCVideos Hash: "+itemObj.getString("Hash"));
+//													isNEW_VIDEOS = isDiffHash("UCVideosHash",itemObj.getString("Hash"));
+//
+//														if(isNEW_VIDEOS){
+//															Log.e("PHILLY_POLICE","UC_VIDEOS HASH HAS CHANGED");
+//															IMDIFF_VIDEO = true;
+//
+//														}else if(!isNEW_VIDEOS){
+//															Log.e("PHILLY_POLICE","UC_VIDEOS HASH HAS NOT CHANGED");
+//														}
+//												}
 
 
 											}
@@ -356,8 +381,10 @@ public class PoliceUpdateService extends Service{
 		 	
 	 		postObj.put("District_Update", "true");
 	 		postObj.put("DeviceID", deviceID);
+	 		postObj.put("HashTag", NHash);
 	 		postObj.put("Districts", jArray);
-	 		postObj.put("UC_Videos", cst(IMDIFF_VIDEO));
+	 		postObj.put("ServiceCheck", "true");
+	 		//postObj.put("UC_Videos", cst(IMDIFF_VIDEO));
 	 		String data = postObj.toString();
 	 		Log.e("POSTING_THIS", jArray.toString());
 	 		Log.e("PUSHING_THIS",postObj.toString());
@@ -406,15 +433,14 @@ public class PoliceUpdateService extends Service{
 		 
 			///PREFERENCE CHECK///
 			SharedPreferences chkbx = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			SharedPreferences chkbx2 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			boolean isDisSet = chkbx.getBoolean("checkbox_preference", false); // HAS THE USER CHECK THE NEWSTORY BOX
-			boolean isUCSet =  chkbx2.getBoolean("UCV_checkbox_preference", false);
+			boolean isSound =  chkbx.getBoolean("EN_ableSound", false);
 			
 				
 				if(isDisSet && IMDIFF_NEWS){
 					
 					Log.e("PHILLY_POLICE_SERVICE", "NEWS ALERTS SET && HASH HAS CHANGED");
-					police = Uri.parse("android.resource://furious.phillypolicemobile/" + R.raw.police_siren);
+
 					SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			        Set<String> a = pref.getStringSet("district_preference", null);
 			        prefs = new ArrayList<String>();
@@ -426,39 +452,29 @@ public class PoliceUpdateService extends Service{
 					        	prefs.add(str);
 					        }								
 								
-							 if(!isUCSet){
-								
-								Log.e("PHILLY_POLICE","UC_VIDEOS NOT SET && HASH HAS CHANGED");
-								IMDIFF_VIDEO = false;
-							
-							 }else{
-								
-								 IMDIFF_VIDEO = true;
-							
-							 }
+
 			        	
 			        		String jsonData = getJSONData();
 							Log.i("PHILLY_POLICE","RETURNED FROM THE SERVER ::::::  "+jsonData);
 							JSONObject jObj = new JSONObject(jsonData);
 							String Ncount = jObj.getString("NewsTotalCount");
-							String Vcount = jObj.getString("VideoTotalCount");
 							String desc  = "";
 							String title = "";
 					
-								if(Integer.valueOf(Ncount) >=1 || Integer.valueOf(Vcount) >=1){
+								if(Integer.valueOf(Ncount) >=1){
 									
-									Intent intent = new Intent(getApplicationContext(), PoliceNewsAll.class);
+									Intent intent = new Intent(getApplicationContext(), MainStartFragmentActivity.class);
 	//								Bundle bundle = new Bundle();
 	//								bundle.putString("HashTag", getNewsHash());
 									intent.putExtra("HashTag", getNewsHash("NewsStoryHash"));
 									
 									TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-									stackBuilder.addParentStack(PoliceNewsAll.class);
+									stackBuilder.addParentStack(MainStartFragmentActivity.class);
 									stackBuilder.addNextIntent(intent);
 									PendingIntent pIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
 									
-									if(Integer.valueOf(Ncount) >=1 && Integer.valueOf(Vcount) == 0){ // News but no videos
+									if(Integer.valueOf(Ncount) >=1){
 										
 										if(Integer.valueOf(Ncount) == 1){
 											title = Ncount+" News Story";
@@ -466,39 +482,8 @@ public class PoliceUpdateService extends Service{
 											title = Ncount+" News Stories";
 										}
 										
-										desc = jObj.getJSONArray("NewsObjects").getJSONObject(0).getString("Title");
+										desc = jObj.getJSONArray("NewsStories").getJSONObject(0).getString("Title");
 									
-									}else if(Integer.valueOf(Ncount) >=1 && Integer.valueOf(Vcount) >= 1){
-										
-										String l1 = "";
-										String l2 = "";
-										
-										if(Integer.valueOf(Ncount) == 1){
-											l1 = Ncount+" News Story";
-										}else{
-											l1 = Ncount+" News Stories";
-										}
-										
-										if(Integer.valueOf(Vcount) == 1){
-											l2 = Vcount+" UC Video";
-										}else{
-											l2 = Vcount+" UC Videos";
-										}
-										
-										title = l1+ " and "+l2;
-										
-										desc = jObj.getJSONArray("NewsObjects").getJSONObject(0).getString("Title");
-									
-									}else if(Integer.valueOf(Ncount) == 0 && Integer.valueOf(Vcount) >= 1){
-										
-											if(Integer.valueOf(Vcount) == 1){
-												title = Vcount+" UC Video";
-											}else{
-												title = Vcount+" UC Videos";
-											}
-											
-										desc = jObj.getJSONArray("VideoObjects").getJSONObject(0).getString("VideoTitle");
-										
 									}
 									
 									desc = desc.substring(0,Math.min(desc.length(), 200)); /// only 200 words in the Notification box
@@ -507,12 +492,25 @@ public class PoliceUpdateService extends Service{
 									views.setImageViewResource(R.id.image, R.drawable.ic_launcher);
 									views.setTextViewText(R.id.title, title);
 									views.setTextViewText(R.id.text, desc);
-									
-									NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-						                     this)
-											 .setSmallIcon(R.drawable.ic_launcher)
-						                     .setContent(views)
-						                     .setSound(police); 
+
+									if(isSound){
+
+										 mBuilder = new NotificationCompat.Builder(
+												this)
+												.setSmallIcon(R.drawable.ic_launcher)
+												.setContent(views);
+
+									}else{
+
+										police = Uri.parse("android.resource://furious.phillypolicemobile/" + R.raw.police_siren);
+
+										 mBuilder = new NotificationCompat.Builder(
+												this)
+												.setSmallIcon(R.drawable.ic_launcher)
+												.setContent(views)
+												.setSound(police);
+									}
+
 
 															        		
 									mBuilder.setContentIntent(pIntent);
@@ -540,7 +538,7 @@ public class PoliceUpdateService extends Service{
 			        	
 				}else if(isDisSet && !IMDIFF_NEWS){
 					Log.e("PHILLY_POLICE_SERVICE","ALERTS CHECKED BUT NO UPDATES");
-					
+
 				}
 				
 
@@ -549,17 +547,17 @@ public class PoliceUpdateService extends Service{
 			
 		}
 	 
-	 private String cst(boolean isgood){
-		String flwrd = null;
-		 if(isgood){
-			 flwrd = "true";
-		 }else if(!isgood){
-			 flwrd = "false";
-		 }
-		
-		 return flwrd;
-		 
-	 }
+//	 private String cst(boolean isgood){
+//		String flwrd = null;
+//		 if(isgood){
+//			 flwrd = "true";
+//		 }else if(!isgood){
+//			 flwrd = "false";
+//		 }
+//
+//		 return flwrd;
+//
+//	 }
 	 
 	 private boolean isConnected() throws IOException{
 			boolean isGood = false;

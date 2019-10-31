@@ -51,11 +51,6 @@
         <service android:name="furious.phillypolicemobile.PoliceUpdateService" />
 
         <activity
-            android:name="furious.viewfragments.PoliceNewsAll"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="furious.viewfragments.preferences.MainPreferenceActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />

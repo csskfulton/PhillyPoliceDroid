@@ -257,7 +257,7 @@ import furious.viewfragments.bookmark.PoliceNews;
 					if(data.equals("No Data Connection") || data.isEmpty() || data.length() == 0){
 						Toast.makeText(getActivity(), "No Data", Toast.LENGTH_LONG).show();
 					}else{
-						
+						Log.i("SERVER SAID THIS::  ",data);
 						JSONObject jObj = new JSONObject(data);
 						JSONArray jArray = jObj.getJSONArray("News");
 						TOTAL_COUNT = jObj.getInt("TotalCount");
