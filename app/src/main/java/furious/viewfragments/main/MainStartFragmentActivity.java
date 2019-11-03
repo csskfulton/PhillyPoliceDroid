@@ -72,7 +72,7 @@ public class MainStartFragmentActivity extends AppCompatActivity{
 	}
 
 	public class NewsPagerAdapter extends FragmentPagerAdapter {
-		private String[] Positions = {"District News","Main News","Shootings"};
+		private String[] Positions = {"Main News","District News","Shootings"};
 		private Fragment[] frags = {
 				new MainNews(),
 				new MainDistrictNews(),

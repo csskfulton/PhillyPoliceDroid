@@ -24,7 +24,7 @@ public class ShootingObjectAdapter  extends BaseAdapter {
     class NEWS_S_ViewHolder{
 
         public TextView DCNumber;
-        public TextView CrimeDate;
+      //  public TextView CrimeDate;
         public TextView Address;
         public TextView DistNumber;
         public TextView Description;
@@ -71,19 +71,20 @@ public class ShootingObjectAdapter  extends BaseAdapter {
         if(arg1 == null){
             viewHolder = new ShootingObjectAdapter.NEWS_S_ViewHolder();
             Log.i("LOOKING AT", Integer.toString(arg0));
-            convertView = inflater.inflate(R.layout.shooting_layout, arg2, false);
-            viewHolder.DCNumber = (TextView) convertView.findViewById(R.id.dcNumTitle);
-            viewHolder.CrimeDate = (TextView) convertView.findViewById(R.id.shootDate);
-            viewHolder.DistNumber = (TextView) convertView.findViewById(R.id.distNum);
+            convertView = inflater.inflate(R.layout.shoot_layoutrow, arg2, false);
+
+            viewHolder.DCNumber = (TextView) convertView.findViewById(R.id.shootDCNum);
+            viewHolder.DistNumber = (TextView) convertView.findViewById(R.id.shootDistNum);
             viewHolder.Address = (TextView) convertView.findViewById(R.id.shootAddress);
             viewHolder.Description = (TextView) convertView.findViewById(R.id.shootDesc);
-            viewHolder.isFatal = (TextView) convertView.findViewById(R.id.isFatalText);
-            viewHolder.isOffInvolved = (TextView) convertView.findViewById(R.id.isOffInv);
+            viewHolder.isFatal = (TextView) convertView.findViewById(R.id.shootStatus);
+            viewHolder.isOffInvolved = (TextView) convertView.findViewById(R.id.shootIsOff);
 
             convertView.setTag(viewHolder);
 
 
         }else{
+
             viewHolder = (ShootingObjectAdapter.NEWS_S_ViewHolder) convertView.getTag();
         }
 
@@ -93,6 +94,8 @@ public class ShootingObjectAdapter  extends BaseAdapter {
         String age = newsObj.getAge();
         String wound = newsObj.getWound();
         String race = newsObj.getRace();
+        String blk = newsObj.getLocationAddress();
+        String d_date = newsObj.getCrimeDate();
 
         if(gender == "M"){
             gender = "male";
@@ -100,23 +103,22 @@ public class ShootingObjectAdapter  extends BaseAdapter {
          gender = "female";
         }
 
-        String desc = "A "+age+" y/o "+race+" "+gender+" was wounded in the "+wound;
+        String desc = "On "+d_date+" A "+age+" y/o "+race+" "+gender+" was wounded in the "+wound+" on the "+blk;
 
         viewHolder.DCNumber.setText("DC# "+newsObj.getDCNumber());
-        viewHolder.CrimeDate.setText(newsObj.getCrimeDate());
         viewHolder.DistNumber.setText(newsObj.getDistrictNumber()+" District");
         viewHolder.Address.setText(newsObj.getLocationAddress());
         viewHolder.Description.setText(desc);
 
         if(newsObj.isFatal){
-            viewHolder.isFatal.setText("Fatal");
+            viewHolder.isFatal.setText("Fatal Shooting");
         }else{
-            viewHolder.isFatal.setText("Non-Fatal");
+            viewHolder.isFatal.setText("Non-Fatal Shooting");
         }
         if(newsObj.isOfficerInvolved){
-            viewHolder.isOffInvolved.setText("Yes");
+            viewHolder.isOffInvolved.setText("Officer Involved: Yes");
         }else{
-            viewHolder.isOffInvolved.setText("No");
+            viewHolder.isOffInvolved.setText("Officer Involved: No");
         }
         return convertView;
     }

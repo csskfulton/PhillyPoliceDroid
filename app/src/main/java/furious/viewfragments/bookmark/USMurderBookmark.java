@@ -92,7 +92,7 @@ public class USMurderBookmark extends ListFragment {
                     if (!ismore.getText().equals("No More Bookmarks")) {
                         new fetchMoreBookmarks().execute();
                     } else {
-                        Toast.makeText(getActivity(), "Need top write more code", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Need top write more code", Toast.LENGTH_SHORT).show();
 
                     }
 

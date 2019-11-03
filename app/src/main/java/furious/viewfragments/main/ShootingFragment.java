@@ -1,8 +1,6 @@
 package furious.viewfragments.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -20,7 +18,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -34,28 +31,18 @@ import furious.objadapters.ShootingObjectAdapter;
 import furious.phillypolicemobile.R;
 import furious.utils.HttpClientInfo;
 
-public class ShootingFragment extends ListFragment implements AdapterView.OnItemLongClickListener{
+public class ShootingFragment extends ListFragment{
 
 
     ArrayList<ShootingObject> newsObjs;
 
     HttpURLConnection httpcon;
-    TextView headerTxt;
     TextView noNewsTxt;
     TextView Htitle;
     ShootingObjectAdapter adapter;
     private int TOTAL_COUNT;
-    private int DISPLAY_COUNT;
 
 
-    static ShootingFragment newInstance(String district){
-        ShootingFragment frag = new ShootingFragment();
-        Bundle args = new Bundle();
-        args.putString("DistrictNumber", district);
-        frag.setArguments(args);
-
-        return frag;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +56,6 @@ public class ShootingFragment extends ListFragment implements AdapterView.OnItem
         super.onActivityCreated(savedState);
 
         new getDistrictNews().execute();
-        this.getListView().setOnItemLongClickListener(this);
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
@@ -92,30 +78,11 @@ public class ShootingFragment extends ListFragment implements AdapterView.OnItem
 
         View layout = inflater.inflate(R.layout.shooting, container, false);
         noNewsTxt = (TextView) layout.findViewById(R.id.NoNewsTxtViewS);
-//        headerTxt = (TextView) layout.findViewById(R.id.ShootHeaderTextView);
-//        headerTxt.setText("Lastest Shootings");
-//        headerTxt.setVisibility(View.VISIBLE);
 
         return layout;
 
     }
 
-    public static String CVDistrict(String dnum){
-        String nwdrt = null;
-
-        if(dnum.equals("2") || dnum.equals("22")){
-            nwdrt = dnum.concat("nd");
-        }else if(dnum.equals("1") || dnum.equals("21")){
-            nwdrt = dnum.concat("st");
-        }else if(dnum.equals("3") || dnum.equals("23")){
-            nwdrt = dnum.concat("rd");
-        }else{
-            nwdrt = dnum.concat("th");
-        }
-
-        return nwdrt;
-
-    }
 
     public class getDistrictNews extends AsyncTask<String, Void, ArrayList<ShootingObject>> {
 
@@ -203,21 +170,6 @@ public class ShootingFragment extends ListFragment implements AdapterView.OnItem
     }
 
 
-    public static Bitmap getBitmapFromURL(String src){
-        try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     private String getListData() throws IOException, JSONException{
 
         String result = null;
@@ -278,14 +230,6 @@ public class ShootingFragment extends ListFragment implements AdapterView.OnItem
 
     }
 
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        registerForContextMenu(this.getListView());
-        getListView().showContextMenu();
-        return true;
-    }
 
     private View addTheFooter(String string) {
         View k = getActivity().getLayoutInflater().inflate(R.layout.news_more_header, null);

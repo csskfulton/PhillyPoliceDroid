@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/shootDCNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textSize="17dp"
+                android:text="DC# 1234-2334-232"/>
+
+            <TextView
+                android:id="@+id/shootDistNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:textSize="17dp"
+                android:text="12th District" />
+
+            <TextView
+                android:id="@+id/shootAddress"
+                android:layout_below="@+id/shootDistNum"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17000 blk of W Poplar St" />
+
+            <View
+                android:id="@+id/shootDivLine"
+                android:layout_width="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@id/shootAddress"
+                android:layout_height="3dp"
+                android:background="#c0c0c0"/>
+
+            <TextView
+                android:id="@+id/shootStatus"
+                android:layout_below="@+id/shootDivLine"
+                android:padding="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: Non-Fatal" />
+
+            <TextView
+                android:id="@+id/shootIsOff"
+                android:layout_below="@+id/shootDivLine"
+                android:padding="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Officer Involved: No" />
+
+            <TextView
+                android:id="@+id/shootDesc"
+                android:layout_below="@+id/shootStatus"
+                android:padding="10dp"
+                android:textSize="17dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="On wed October 30, 2019, a 32 y/o black man was wounded in the leg on the 17000 blk of w popular st" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>

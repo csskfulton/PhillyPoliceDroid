@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import furious.dataobjs.PoliceDistricts;
 import furious.phillypolicemobile.R;
 import furious.utils.HttpClientInfo;
-import furious.viewfragments.preferences.MainPreferenceFragment;
 import furious.viewfragments.uscrimes.MainUSCrimesActivity;
 import furious.viewfragments.usmurders.MainUSMurderActivity;
 
@@ -62,8 +61,8 @@ public class DistrictInfoFragment extends Fragment{
 	ArrayList<PoliceDistricts> CalList;
 	PoliceDistricts policeObj;
 	Activity context;
-	
-	
+
+
 	static DistrictInfoFragment newInstance(String district) {
 		DistrictInfoFragment frag = new DistrictInfoFragment();
         Bundle args = new Bundle();

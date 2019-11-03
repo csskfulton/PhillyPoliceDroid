@@ -173,12 +173,14 @@ public class MainUSMurderActivity extends AppCompatActivity {
 
                 if((TOTAL_COUNT - newsAdapter.getItemCount()) <= 5){
                     data = getListData(HttpClientInfo.URL,newsAdapter.getItemCount(),TOTAL_COUNT);
+                    Log.i("GOT FROM SERVER::",data);
                 }else if((TOTAL_COUNT - newsAdapter.getItemCount()) > 5){
                     data = getListData(HttpClientInfo.URL,newsAdapter.getItemCount(),5);
+                    Log.i("GOT FROM SERVER::",data);
                 }
 
                 if(data.equals("No Data Connection") || data.isEmpty() || data.length() == 0){
-                    Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_LONG).show();
                 }else{
 
                     JSONObject jObj = new JSONObject(data);
@@ -297,9 +299,10 @@ public class MainUSMurderActivity extends AppCompatActivity {
 
             try {
                 String data = getListData(HttpClientInfo.URL,Srt,End);
+                Log.i("GOT FROM SERVER::",data);
 
                 if(data.equals("No Data Connection") || data.isEmpty() || data.length() == 0){
-                    Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_LONG).show();
                 }else{
 
                     JSONObject jObj = new JSONObject(data);
@@ -429,6 +432,7 @@ public class MainUSMurderActivity extends AppCompatActivity {
             postObj.put("Start", srt);
             postObj.put("End", end);
             String data = postObj.toString();
+            Log.i("SEnding TO SERER::",data);
 
             //Connect
             httpcon = (HttpURLConnection) ((new URL(uRL).openConnection()));

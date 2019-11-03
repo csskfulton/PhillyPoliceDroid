@@ -45,13 +45,11 @@ import furious.utils.HttpClientInfo;
 import furious.viewfragments.bookmark.PoliceNews;
 
 
-public class DistrictNewsList extends ListFragment implements AdapterView.OnItemLongClickListener{
+public class DistrictNewsList extends ListFragment{
 
 
 	String DISTRICT;
-	ListView listview;
 	ArrayList<NewStoryObject> newsObjs;
-	ArrayList<String> items;
 	ProgressBar progressM;
 	ProgressDialog pDialog;
 	HttpURLConnection httpcon;
@@ -60,7 +58,6 @@ public class DistrictNewsList extends ListFragment implements AdapterView.OnItem
 	TextView noNewsTxt;
 	NewsAdapter adapter;
 	private int TOTAL_COUNT;
-	private int DISPLAY_COUNT;
 
 	
 	static DistrictNewsList newInstance(String district){
@@ -84,8 +81,7 @@ public class DistrictNewsList extends ListFragment implements AdapterView.OnItem
  	@Override
  	public void onActivityCreated(Bundle savedState){
  	    super.onActivityCreated(savedState);
- 	  
- 	   this.getListView().setOnItemLongClickListener(this);
+
  	   this.getListView().setOnItemClickListener(new OnItemClickListener(){
 
 		@Override
@@ -377,15 +373,7 @@ public class DistrictNewsList extends ListFragment implements AdapterView.OnItem
          getActivity().getMenuInflater().inflate(R.menu.newsobject_menu, menu);
 
      }
-     
-     
-  	@Override
-  	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-  		registerForContextMenu(this.getListView());
-  	    getListView().showContextMenu();
-  	    return true;
-  	}
   	
   	 private View Header(String string) {
 	    	View k = getActivity().getLayoutInflater().inflate(R.layout.news_more_header, null);

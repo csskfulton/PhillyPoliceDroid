@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,8 @@ public class CrimeFragment extends ListFragment {
     ArrayList<CrimeObject> CR_Obj;
     int TOTAL_COUNT;
     CrimesAdapter adapter;
+    TextView noCrimez;
+    RelativeLayout footertext;
     HttpURLConnection httpcon;
     TextView Ftitle;
 
@@ -103,9 +106,7 @@ public class CrimeFragment extends ListFragment {
                     TextView txtV = (TextView) view.findViewById(R.id.MoreListUCTextView);
                     String no = (String) txtV.getText();
 
-                    if(no.equals("More Crime Incidents")){
-                        Toast.makeText(getActivity(), "TIme to write", Toast.LENGTH_SHORT).show();
-
+                    if(no.equals("No More Crime Incidents")){
 
                     }else{
                         new getMoreCrimesData().execute();
@@ -134,6 +135,8 @@ public class CrimeFragment extends ListFragment {
 
         View layout = inflater.inflate(R.layout.crimelayout, container, false);
         TextView header = (TextView) layout.findViewById(R.id.CrimeHeader);
+        noCrimez = (TextView) layout.findViewById(R.id.Crime_NoVid);
+        footertext = (RelativeLayout) layout.findViewById(R.id.footer_crimes);
         String dis = addTH(DISTRICT_NUM);
         header.setText(dis+" District Crimes");
 
@@ -201,15 +204,16 @@ public class CrimeFragment extends ListFragment {
             adapter = new CrimesAdapter(getActivity(), uc_vid_objs);
 
             if(uc_vid_objs.size() <= 0){
-
+                noCrimez.setVisibility(View.VISIBLE);
 
             }else{
                 String ct = Integer.toString(TOTAL_COUNT);
 
                 if(TOTAL_COUNT == uc_vid_objs.size()){
-                    View title = Header("More Crime Incidents");
-                    getListView().addFooterView(title);
+//                    View title = Header("No More Crime Incidents");
+//                    getListView().addFooterView(title);
                     getListView().setAdapter(adapter);
+                    footertext.setVisibility(View.VISIBLE);
                 }else{
                     View title = Header("More Incidents "+"( "+uc_vid_objs.size()+" of "+ct+" )");
                     getListView().addFooterView(title);
@@ -285,7 +289,8 @@ public class CrimeFragment extends ListFragment {
 
             if(TOTAL_COUNT == news_short_Objs.size()){
 
-                Ftitle.setText("More Crime Incidents");
+                Ftitle.setText("No More Crime Incidents");
+                //getListView().findViewById(R.id.footervID).setVisibility(View.GONE);
 
             }else if(news_short_Objs == null){
                 Toast.makeText(getActivity(),"Hello",Toast.LENGTH_LONG).show();

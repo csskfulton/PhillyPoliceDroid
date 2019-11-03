@@ -79,7 +79,7 @@ public class UCVideoBookmark extends ListFragment{
 					new fetchMoreBokmarks().execute();
 
 				} else {
-					Toast.makeText(getActivity(), "Need top write more code", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getActivity(), "Need top write more code", Toast.LENGTH_SHORT).show();
 				}
 
 			}else{

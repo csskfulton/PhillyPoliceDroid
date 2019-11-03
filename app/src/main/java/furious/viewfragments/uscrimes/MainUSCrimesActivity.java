@@ -51,6 +51,7 @@ public class MainUSCrimesActivity extends AppCompatActivity {
     TextView footerTxt;
     ProgressBar progress;
     TextView ismore;
+    TextView usm_nomore;
     HttpURLConnection httpcon;
     USCrimesAdapter adapter;
 
@@ -73,6 +74,8 @@ public class MainUSCrimesActivity extends AppCompatActivity {
         footer = (RelativeLayout) findViewById(R.id.usmurder_footer);
         footerTxt = (TextView) findViewById(R.id.usmurderfootertxt);
         listview = (RecyclerView) findViewById(R.id.usmurder_list);
+        usm_nomore = (TextView) findViewById(R.id.usm_nomore);
+        usm_nomore.setText("No Unsolved Crimes to Display");
 
         layoutManager = new LinearLayoutManager(this);
         listview.setLayoutManager(layoutManager);
@@ -103,9 +106,11 @@ public class MainUSCrimesActivity extends AppCompatActivity {
 
             try {
                 String data = getListData(HttpClientInfo.URL,Srt,End);
+                Log.i("DATA FRO SERVER", data);
 
                 if(data.equals("No Data Connection") || data.isEmpty() || data.length() == 0){
-                    Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_LONG).show();
+                    Log.i("NOTHING RETUJENR","No DATA");
                 }else{
 
                     JSONObject jObj = new JSONObject(data);
@@ -210,6 +215,7 @@ public class MainUSCrimesActivity extends AppCompatActivity {
             postObj.put("Start", srt);
             postObj.put("End", end);
             String data = postObj.toString();
+            Log.i("SEnd DATA to SERVER",data);
 
             //Connect
             httpcon = (HttpURLConnection) ((new URL(uRL).openConnection()));
